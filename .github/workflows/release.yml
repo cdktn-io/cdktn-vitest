@@ -14,24 +14,33 @@ jobs:
     runs-on: ubuntu-latest
     environment: release # optional; match the Trusted Publisher config if set
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
 
       # Reads the pinned pnpm version from package.json "packageManager".
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
 
-      - uses: actions/setup-node@v4
+      # No dependency cache in the publish job: a restorable cache is a
+      # poisoning vector for a workflow that ships an artifact. setup-node does
+      # not cache unless `cache:` is set (see .github/zizmor.yml).
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
           registry-url: "https://registry.npmjs.org"
-          cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm build
       - run: pnpm test
 
-      # npm >= 11.5.1 performs the OIDC token exchange automatically when
-      # id-token: write is granted and a Trusted Publisher is configured for
+      # OIDC trusted publishing requires npm >= 11.5.1, which Node 24 already
+      # bundles (npm 11.6.x). npm performs the OIDC token exchange automatically
+      # when id-token: write is granted and a Trusted Publisher is configured for
       # this repo + workflow. No NODE_AUTH_TOKEN / NPM_TOKEN required.
-      - run: npm install -g npm@latest
       - run: npm publish --access public --provenance
+        env:
+          # Defensive: keep OIDC the sole auth path. setup-node can leave an
+          # empty/literal NODE_AUTH_TOKEN in .npmrc; forcing it empty prevents a
+          # stale token from shadowing the OIDC flow (actions/setup-node#1440).
+          NODE_AUTH_TOKEN: ""

@@ -1,0 +1,8 @@
+# zizmor configuration — https://docs.zizmor.sh/configuration/
+rules:
+  cache-poisoning:
+    ignore:
+      # False positive: the publish job does NOT configure a dependency cache
+      # (`actions/setup-node` only caches when `cache:` is set, and it is not).
+      # No restorable cache exists to poison.
+      - release.yml

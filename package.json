@@ -21,6 +21,7 @@
     "cdk-terrain",
     "vitest",
     "terraform",
+    "opentofu",
     "testing",
     "matchers"
   ],
