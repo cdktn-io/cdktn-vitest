@@ -1,0 +1,37 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # REQUIRED for OIDC trusted publishing + provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release # optional; match the Trusted Publisher config if set
+    steps:
+      - uses: actions/checkout@v4
+
+      # Reads the pinned pnpm version from package.json "packageManager".
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+      - run: pnpm test
+
+      # npm >= 11.5.1 performs the OIDC token exchange automatically when
+      # id-token: write is granted and a Trusted Publisher is configured for
+      # this repo + workflow. No NODE_AUTH_TOKEN / NPM_TOKEN required.
+      - run: npm install -g npm@latest
+      - run: npm publish --access public --provenance

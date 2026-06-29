@@ -1,0 +1,58 @@
+{
+  "name": "@cdktn/vitest",
+  "version": "0.1.0",
+  "description": "Vitest matchers for CDK Terrain (cdktn)",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "NOTICE"
+  ],
+  "keywords": [
+    "cdktn",
+    "cdk-terrain",
+    "vitest",
+    "terraform",
+    "testing",
+    "matchers"
+  ],
+  "homepage": "https://github.com/cdktn-io/cdktn-vitest#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdktn-io/cdktn-vitest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cdktn-io/cdktn-vitest/issues"
+  },
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "cdktn": ">= 0.23.0",
+    "vitest": ">= 2.1.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.2",
+    "cdktn": "^0.23.3",
+    "constructs": "^10.4.2",
+    "typescript": "^5.9.2",
+    "vitest": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

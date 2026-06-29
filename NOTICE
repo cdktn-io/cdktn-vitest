@@ -1,0 +1,21 @@
+@cdktn/vitest
+Copyright (c) 2026 cdktn-io
+
+This product includes software designed by, and adapts the public API of, the
+following MIT-licensed projects:
+
+- cdktn-vitest (https://www.npmjs.com/package/cdktn-vitest)
+  Copyright (c) Aníbal Jorquera <ajorquera.cornejo@gmail.com>
+  The single-export `setupVitest()` API and the Vitest `passEvaluation`
+  predicate mirror this package's design. This is a clean reimplementation in
+  TypeScript; no compiled artifacts from the original are distributed here.
+
+- cdktf-vitest (https://www.npmjs.com/package/cdktf-vitest)
+  Copyright (c) Daniel Grefberg <hello@danielgrefberg.com>
+  The original (now deprecated) Vitest matchers adapter for HashiCorp's CDKTF,
+  from which the cdktn variant was derived.
+
+The matcher *logic* (resource/data-source/provider assertions, Terraform
+validation) is provided by CDK Terrain (cdktn) core via its exported
+`testingMatchers`. This package is a thin Vitest adapter over that logic,
+mirroring cdktn core's built-in Jest adapter (`setupJest()`).
